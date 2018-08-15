@@ -19,7 +19,7 @@ const getAsset = (asset) => {
 }
 
 //create the distributor account keypair
-var distributorSecret = "SAIEZD2ZIEARTCMQK433566CJ24YGPYET6MUSQMFUKIY7QLALW6GUG4G"; //get from database?
+var distributorSecret = "S..."; //get from database?
 const distributorKeypair = StellarSdk.Keypair.fromSecret(distributorSecret) //DISTRIBUTOR ACCOUNT
 //create the new account keypairs to use
 var newAccountKeypair = StellarSdk.Keypair.random();
