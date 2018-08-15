@@ -21,6 +21,7 @@ const getAsset = (asset) => {
 
 //must be "fromsecret" to sign a Tx with
 const sender = StellarSdk.Keypair.fromSecret('SAIEZD2ZIEARTCMQK433566CJ24YGPYET6MUSQMFUKIY7QLALW6GUG4G'); //get from database? distributor secret key
+var recipient = "GAFPZODJ27C5FNHHOVRO56VTGXYCZG2Z4FPAWISI4MFRZMNQ2LYFEWO3"; //recipient public address //TRUSTLINE HAS TO EXIST //In a real app this would be got from the QR code or pasted/typed in by the sender.
 
 // 'load' the account (really, all it's getting is the next tx sequence number)
 server.loadAccount(sender.publicKey())
@@ -33,7 +34,7 @@ server.loadAccount(sender.publicKey())
     // that could be 100 payments to 100 different accounts, etc...
     builder.addOperation(
         StellarSdk.Operation.payment({
-            destination: 'GAFPZODJ27C5FNHHOVRO56VTGXYCZG2Z4FPAWISI4MFRZMNQ2LYFEWO3', // destination address(random test account) //TRUSTLINE HAS TO EXIST 
+            destination: recipient, // destination address(random test account) //TRUSTLINE HAS TO EXIST 
             asset: getAsset('MUR'), // see helper function above
             amount: '1.0' // transaction amount as string
         })
