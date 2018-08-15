@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Horizon API Transaction History for MUR Token</title>
+</head>
+<body>
+
+    <p>account to check: GAFPZODJ27C5FNHHOVRO56VTGXYCZG2Z4FPAWISI4MFRZMNQ2LYFEWO3 
+        <br>
+        or: GCXYQK65HXITPWSTEP5Y4JUEVD2SU2XT45NU5ALIO3LXRENZA2XH3XN6
+    </p>
+    <input id="account">
+    
+
+    <button onclick="btnClick()">Click Here to get Transaction Data for the account</button>
+
+
+    <p id="txData"> 
+
+    </p>
+
+
+    <script type="text/javascript">
+        function btnClick() {
+            console.log("btnClick triggered");
+
+            var url = "https://horizon-testnet.stellar.org/accounts/" + document.querySelector("#account").value + "/payments";
+            console.log(url);
+           
+            var xhttp = new XMLHttpRequest();
+
+            var jsonFile;
+            let txData = document.querySelector('#txData');
+
+            
+
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                   
+                    jsonFile = JSON.parse(this.responseText);
+                    var recordsArray = jsonFile._embedded.records;
+                    console.log(recordsArray);
+
+                    
+                    for(var i = 0; i < recordsArray.length ; i++){
+                        
+                        if(recordsArray[i].asset_code == "MUR"){
+
+                            txData.innerHTML = txData.innerHTML + 
+                            (
+                                
+                                "Transaction ID: "+recordsArray[i].transaction_hash + "<br>"+
+                                
+                                "Time: "+ recordsArray[i].created_at + "<br>"+
+                                
+                                "Token Symbol: " + recordsArray[i].asset_code + "<br>"+
+                                
+                                "To: " + recordsArray[i].to + "<br>"+
+                                
+                                "From: " + recordsArray[i].from + "<br>"+
+                                
+                                "Amount Transferred: " + recordsArray[i].amount + " " + recordsArray[i].asset_code + "<br>"+
+
+                                "*****************<br>"
+                            );
+
+                        }
+                        
+
+                    }
+
+                }
+            };
+            xhttp.open("GET", url, true);
+            xhttp.send();
+
+        }
+
+    </script>
+</body>
+</html>
