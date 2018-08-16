@@ -10,6 +10,10 @@
     <p>account to check: GAFPZODJ27C5FNHHOVRO56VTGXYCZG2Z4FPAWISI4MFRZMNQ2LYFEWO3 
         <br>
         or: GCXYQK65HXITPWSTEP5Y4JUEVD2SU2XT45NU5ALIO3LXRENZA2XH3XN6
+        <br>
+        or: GCPECJG6NIVD2NULNUB2BWNCZMI66FINVXILJTQUKZZBHS3M5YFQDHBG
+        <br>
+        or: GCXJI4VX3KOVCERMLRZWSL5OJZGBANRXY7MIDHLBDMCJKN6IW7GRQRAB
     </p>
     <input id="account">
     
@@ -49,7 +53,10 @@
                     
                     for(var i = 0; i < recordsArray.length ; i++){
                         
-                        if(recordsArray[i].asset_code == "MUR"){
+                        if(recordsArray[i].asset_code == "MUR" | 
+                            recordsArray[i].asset_code == "MUR2" |
+                            recordsArray[i].asset_code == "MUR3" && 
+                            recordsArray[i].asset_issuer == "GDRZOGXOBRGWN7WG5MG3LI3PFJCVWB7XCAIHUEVFHFSE3TMCKWH4YJG7"){
 
                             txData.innerHTML = txData.innerHTML + 
                             (
