@@ -7,8 +7,8 @@ const server = new StellarSdk.Server('https://horizon-testnet.stellar.org'); // 
 // an arbitary list of trusted assets
 const ASSETS = {
     'MUR': new StellarSdk.Asset('MUR', 'GDRZOGXOBRGWN7WG5MG3LI3PFJCVWB7XCAIHUEVFHFSE3TMCKWH4YJG7'), //name, ISSUER ACC
-    'USDT': new StellarSdk.Asset('USDT', 'GCQTGZQQ5G4PTM2GL7CDIFKUBIPEC52BROAQIAPW53XBRJVN6ZJVTG6V'),
-    'MOBI' : new StellarSdk.Asset('MOBI', 'GA6HCMBLTZS5VYYBCATRBRZ3BZJMAFUDKYYF6AH6MVCMGWMRDNSWJPIH'),
+    'MUR2': new StellarSdk.Asset('MUR2', 'GDRZOGXOBRGWN7WG5MG3LI3PFJCVWB7XCAIHUEVFHFSE3TMCKWH4YJG7'), //name, ISSUER ACC
+    'MUR3': new StellarSdk.Asset('MUR3', 'GDRZOGXOBRGWN7WG5MG3LI3PFJCVWB7XCAIHUEVFHFSE3TMCKWH4YJG7'), //name, ISSUER ACC
     'XLM': StellarSdk.Asset.native()
 }
 
@@ -48,22 +48,58 @@ server.loadAccount(distributorKeypair.publicKey())
         })
     )
 
-    //OPERATION 2: Change Trustline to trust the asset to be used on the platform. How to change trust for another account? 
+    //OPERATION 2: Change Trustline to trust the asset to be used on the platform. 
+    // Q: How to change trust for another account?, than the one loaded? A: by adding multiple signers! (see tx sign below)
     builder.addOperation(
         StellarSdk.Operation.changeTrust({
             asset: getAsset('MUR'), //asset name
             source: newAccountKeypair.publicKey() //new account
         })
     )
+
+    //operation 2(b) Trust MUR2 assets
+    builder.addOperation(
+        StellarSdk.Operation.changeTrust({
+            asset: getAsset('MUR2'), //asset name
+            source: newAccountKeypair.publicKey() //new account
+        })
+    )
+
+    //operation 2(c) Trust MUR3 assets
+    builder.addOperation(
+        StellarSdk.Operation.changeTrust({
+            asset: getAsset('MUR3'), //asset name
+            source: newAccountKeypair.publicKey() //new account
+        })
+    )
     
-    //OPERATION 3: Send the assets that are now trusted to the new account.
+    //OPERATION 3: Send the MUR that are now trusted to the new account.
     builder.addOperation(
         StellarSdk.Operation.payment({
             destination: newAccount, // newAccount account address, taken from random keypair's public key
             asset: getAsset('MUR'), // see helper function above
-            amount: '10' // transaction amount as string (Murph test tokens)
+            amount: '100000' // transaction amount as string (Murph test tokens)
         })
     )
+
+    //OPERATION 3(b): Send the MUR2 that are now trusted to the new account.
+    builder.addOperation(
+        StellarSdk.Operation.payment({
+            destination: newAccount, // newAccount account address, taken from random keypair's public key
+            asset: getAsset('MUR2'), // see helper function above
+            amount: '1000000' // transaction amount as string (Murph2 test tokens)
+        })
+    )
+
+    //OPERATION 3(b): Send the MUR3 that are now trusted to the new account.
+    builder.addOperation(
+        StellarSdk.Operation.payment({
+            destination: newAccount, // newAccount account address, taken from random keypair's public key
+            asset: getAsset('MUR3'), // see helper function above
+            amount: '7000009' // transaction amount as string (Murph3 test tokens)
+        })
+    )
+
     signers.push(newAccountKeypair) // add second signer to list of signers (This is shown for if modularising is required)
 
     // create the transaction XDR
@@ -74,5 +110,5 @@ server.loadAccount(distributorKeypair.publicKey())
     
     // submit to the network. this returns a promise (resolves or rejects depending on the outcome of the transaction)
     server.submitTransaction(transaction);
-    console.log("New Account Created and Funded with XLM and MUR");
+    console.log("New Account Created and Funded with XLM and MUR, MUR2, and MUR3 tokens.");
 })
