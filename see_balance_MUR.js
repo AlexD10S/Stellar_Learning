@@ -6,7 +6,7 @@ const server = new StellarSdk.Server('https://horizon-testnet.stellar.org'); // 
 
 // This solution checks for both the asset_code and the asset_issuer of the token/asset being checked (MUR).
 // For general accounts you may need to verify the issuing account id: b.asset_issuer
-var issuerPublicKey = "GDRZOGXOBRGWN7WG5MG3LI3PFJCVWB7XCAIHUEVFHFSE3TMCKWH4YJG7"; //get from database?
+var issuerPublicKey = "GDRZOGXOBRGWN7WG5MG3LI3PFJCVWB7XCAIHUEVFHFSE3TMCKWH4YJG7";
 const getBalance = (account, currency) => {
     let balance = 0;
     if (currency == 'XLM') {
@@ -17,11 +17,14 @@ const getBalance = (account, currency) => {
     return balance;
 }
 
-const keypair = StellarSdk.Keypair.fromPublicKey('GCXYQK65HXITPWSTEP5Y4JUEVD2SU2XT45NU5ALIO3LXRENZA2XH3XN6')
+//account to be checked
+const keypair = StellarSdk.Keypair.fromPublicKey('GCXJI4VX3KOVCERMLRZWSL5OJZGBANRXY7MIDHLBDMCJKN6IW7GRQRAB') //MUR buyer 3 from notes.txt
 
 server.loadAccount(keypair.publicKey())
 .then(account => {
     console.log(account.balances)
     console.log("MUR Balance for " + account.account_id + ": " + getBalance(account, 'MUR'))
+    console.log("MUR2 Balance for " + account.account_id + ": " + getBalance(account, 'MUR2'))
+    console.log("MUR3 Balance for " + account.account_id + ": " + getBalance(account, 'MUR3'))
     console.log("XLM Balance for " + account.account_id + ": " + getBalance(account, 'XLM'))
 })
